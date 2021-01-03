@@ -21,13 +21,15 @@ const useStyles = makeStyles({
   },
 });
 
-export default function SimpleCard(props: any) {
+const SimpleCard = (props: any) => {
   const classes = useStyles();
-  const [value, setValue] = useState('');
-  const newValue = [props.liveData].find((m: any) => m.metric === props.info.value)?.value;
+  const [metric, setMetric] = useState({ metric: '', unit: '', value: '' });
+  const filterByMetric = [props.liveData].find((m: any) => m.metric === props.info.value);
+  const newValue = filterByMetric !== undefined ? filterByMetric : metric;
+
   useEffect(() => {
     if (newValue !== undefined) {
-      setValue(newValue);
+      setMetric(newValue);
     }
   }, [newValue]);
 
@@ -38,9 +40,11 @@ export default function SimpleCard(props: any) {
           {props.info.label}
         </Typography>
         <Typography className={classes.pos} color="textSecondary">
-          {value}
+          {`${metric.value} - ${metric.unit}`}
         </Typography>
       </CardContent>
     </Card>
   );
-}
+};
+
+export default SimpleCard;

@@ -1,5 +1,6 @@
 import React, { Fragment, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
+// import { LineChart, Line, XAxis, YAxis, CartesianGrid, Legend, ResponsiveContainer, Tooltip } from 'recharts';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Legend, ResponsiveContainer, Tooltip } from 'recharts';
 const moment = require('moment');
 interface Props {
@@ -77,11 +78,11 @@ const Charts: React.FC<Props> = props => {
       <div className={classes.wrapper}>
         <ResponsiveContainer>
           <LineChart data={chartData} margin={{ top: 70, right: 70, left: 70, bottom: 70 }}>
-            <XAxis dataKey="at" tickCount={10} />
+            <XAxis dataKey="at" tickCount={30} />
             <YAxis
               type="number"
               domain={['auto', 'auto']}
-              tickCount={10}
+              tickCount={30}
               scale="linear"
               padding={{ top: 10, bottom: 10 }}
             />
