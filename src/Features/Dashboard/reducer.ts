@@ -1,8 +1,7 @@
 import { createSlice, PayloadAction } from 'redux-starter-kit';
 import moment from 'moment';
-import { setSyntheticTrailingComments } from 'typescript';
 
-export type MultipleMeasurementsTypes = { 
+export type MultipleMeasurementsTypes = {
   multipleMeasurements: string;
 };
 
@@ -20,7 +19,7 @@ export type ApiErrorAction = {
 
 const initialState = {
   multipleMeasurements: {},
-  liveData: {}
+  liveData: {},
   // liveData: [{ metric: '', value: 0, at: 0, unit: ''}],
 };
 
@@ -32,11 +31,10 @@ const metricSlice = createSlice({
       state.multipleMeasurements = action.payload;
     },
     metricLiveDataRecevied: (state, action: PayloadAction<LiveMetricsTypes>) => {
-      state.liveData = [action.payload]?.map((m) => ({
+      state.liveData = [action.payload]?.map(m => ({
         [m.metric]: m.value,
         at: moment(parseInt(m.at)).format('LTS'),
         unit: m.unit,
-
       }))[0];
     },
     metricsApiErrorReceived: (state, action: PayloadAction<ApiErrorAction>) => state,

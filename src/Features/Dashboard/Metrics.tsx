@@ -6,8 +6,9 @@ import { LinearProgress, Grid, Container } from '@material-ui/core/';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import Select from 'react-select';
 import { useQuery, useSubscription } from 'urql';
-
 import makeAnimated from 'react-select/animated';
+import Charts from '../../components/Charts';
+import CardCharts from '../../components/CardCharts';
 
 const animatedComponents = makeAnimated();
 
@@ -68,7 +69,7 @@ const getMetrics = (state: IState) => {
 const Metrics = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  
+
   const [selectedChartOptions, setSelectedChartsOptions] = useState([]);
   const { multipleMeasurements, liveData } = useSelector(getMetrics);
   const [resultsLiveMetrics] = useSubscription({
@@ -84,7 +85,7 @@ const Metrics = () => {
       tempOptions.push({ value: m[1].metric, label: m[1].metric.replace(/([A-Z])/g, ' $1') });
     });
     return tempOptions;
-  }
+  };
 
   const handleChange = (selectedOption: any) => {
     setSelectedChartsOptions(selectedOption);
@@ -126,7 +127,17 @@ const Metrics = () => {
           />
         </Grid>
       </Container>
+      <Grid container spacing={1} className={classes.select}>
+        {selectedChartOptions?.map((c, i) => {
+          return (
+            <Grid key={i} item xs={2}>
+              <CardCharts info={c} liveData={resultsLiveMetrics.data.newMeasurement} />
+            </Grid>
+          );
+        })}
+      </Grid>
       <Grid container spacing={1} className={classes.select}></Grid>
+      <Charts data={multipleMeasurements} liveData={liveData} selectedChartOptions={selectedChartOptions} />
     </>
   );
 };
