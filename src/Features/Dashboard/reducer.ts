@@ -20,7 +20,6 @@ export type ApiErrorAction = {
 const initialState = {
   multipleMeasurements: {},
   liveData: {},
-  // liveData: [{ metric: '', value: 0, at: 0, unit: ''}],
 };
 
 const metricSlice = createSlice({
