@@ -1,6 +1,5 @@
 import React, { Fragment, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-// import { LineChart, Line, XAxis, YAxis, CartesianGrid, Legend, ResponsiveContainer, Tooltip } from 'recharts';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Legend, ResponsiveContainer, Tooltip } from 'recharts';
 const moment = require('moment');
 interface Props {

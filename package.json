@@ -2,6 +2,7 @@
   "name": "eog-react-visualization-base",
   "version": "2.0.0",
   "private": true,
+  "homepage": "https://rhuansantos.github.io/eog-react-assessment",
   "dependencies": {
     "@material-ui/core": "^4.6.1",
     "@material-ui/icons": "^4.5.1",
