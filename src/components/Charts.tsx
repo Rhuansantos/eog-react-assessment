@@ -71,41 +71,47 @@ const Charts: React.FC<Props> = props => {
     const insertLiveData = chartData;
     chartData = mergeObjectsInUnique(insertLiveData);
   }, [liveData]);
+  // Since we are considering to scale on the metrics
+  // I would also put a higher range of colors here or not try to do the colors dynamic for a better UX as well - Leaving it for now
   const colors = ['#16302B', '#694873', '#8B728E', '#85B79D', '#C0E5C8', '#5E5D5C', '#453643', '#28112B'];
-  return (
-    <Fragment>
-      <div className={classes.wrapper}>
-        <ResponsiveContainer>
-          <LineChart data={chartData} margin={{ top: 70, right: 70, left: 70, bottom: 70 }}>
-            <XAxis dataKey="at" tickCount={30} />
-            <YAxis
-              type="number"
-              domain={['auto', 'auto']}
-              tickCount={30}
-              scale="linear"
-              padding={{ top: 10, bottom: 10 }}
-            />
-            <CartesianGrid strokeDasharray="3 3" />
-            <Legend />
-            <Tooltip />
+  if (selectedChartOptions.length === 0) {
+    return <p style={{ textAlign: 'center' }}>Select a metric from the dropdown</p>;
+  } else {
+    return (
+      <Fragment>
+        <div className={classes.wrapper}>
+          <ResponsiveContainer>
+            <LineChart data={chartData} margin={{ top: 70, right: 70, left: 70, bottom: 70 }}>
+              <XAxis dataKey="at" tickCount={30} />
+              <YAxis
+                type="number"
+                domain={['auto', 'auto']}
+                tickCount={30}
+                scale="linear"
+                padding={{ top: 10, bottom: 10 }}
+              />
+              <CartesianGrid strokeDasharray="3 3" />
+              <Legend />
+              <Tooltip />
 
-            {selectedChartOptions?.map((c: { value: string }, i: number) => {
-              return (
-                <Line
-                  type="monotone"
-                  key={c.value}
-                  dataKey={c.value}
-                  stroke={colors[i]}
-                  dot={false}
-                  isAnimationActive={false}
-                />
-              );
-            })}
-          </LineChart>
-        </ResponsiveContainer>
-      </div>
-    </Fragment>
-  );
+              {selectedChartOptions?.map((c: { value: string }, i: number) => {
+                return (
+                  <Line
+                    type="monotone"
+                    key={c.value}
+                    dataKey={c.value}
+                    stroke={colors[i]}
+                    dot={false}
+                    isAnimationActive={false}
+                  />
+                );
+              })}
+            </LineChart>
+          </ResponsiveContainer>
+        </div>
+      </Fragment>
+    );
+  }
 };
 
 export default Charts;

@@ -5,6 +5,10 @@ export type MultipleMeasurementsTypes = {
   multipleMeasurements: string;
 };
 
+export type AllMeasurements = {
+  getMetrics: [];
+};
+
 export type LiveMetricsTypes = {
   liveData: Array<Object>;
   metric: string;
@@ -18,6 +22,7 @@ export type ApiErrorAction = {
 };
 
 const initialState = {
+  allMetrics: [],
   multipleMeasurements: {},
   liveData: {},
 };
@@ -26,6 +31,10 @@ const metricSlice = createSlice({
   name: 'metrics',
   initialState,
   reducers: {
+    allMetricsDataRecevied: (state, action: PayloadAction<AllMeasurements>) => {
+      const { getMetrics } = action.payload;
+      state.allMetrics = getMetrics;
+    },
     multipleMeasurementsDataRecevied: (state, action: PayloadAction<MultipleMeasurementsTypes>) => {
       state.multipleMeasurements = action.payload;
     },
@@ -37,7 +46,6 @@ const metricSlice = createSlice({
       }))[0];
     },
     metricsApiErrorReceived: (state, action: PayloadAction<ApiErrorAction>) => state,
-    metricsLiveErrorReceived: (state, action: PayloadAction<ApiErrorAction>) => state,
   },
 });
 
