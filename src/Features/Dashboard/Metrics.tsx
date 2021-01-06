@@ -23,16 +23,13 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 );
 
+const query = `{
+  getMetrics
+  }
+`;
+
 const queryMultipleMeasurements = `
-query($input: [MeasurementQuery] = [
-  {metricName: "tubingPressure", after: ${currentTime - passTime}, before: ${currentTime}},
-  {metricName: "casingPressure", after: ${currentTime - passTime}, before: ${currentTime}},
-  {metricName: "oilTemp", after: ${currentTime - passTime}, before: ${currentTime}},
-  {metricName: "flareTemp", after: ${currentTime - passTime}, before: ${currentTime}},
-  {metricName: "waterTemp", after: ${currentTime - passTime}, before: ${currentTime}},
-  {metricName: "injValveOpen", after: ${currentTime - passTime}, before: ${currentTime}}
-]
-){
+query($input: [MeasurementQuery]){
   getMultipleMeasurements(input: $input) {
     metric
     measurements {
@@ -59,8 +56,9 @@ export interface MultipleMeasurements {
 }
 
 const getMetrics = (state: IState) => {
-  const { multipleMeasurements, liveData } = state.metrics;
+  const { allMetrics, multipleMeasurements, liveData } = state.metrics;
   return {
+    allMetrics,
     multipleMeasurements,
     liveData,
   };
@@ -71,25 +69,51 @@ const Metrics = () => {
   const dispatch = useDispatch();
 
   const [selectedChartOptions, setSelectedChartsOptions] = useState([]);
-  const { multipleMeasurements, liveData } = useSelector(getMetrics);
+  const [dropDownOptions, setDropDownOptions] = useState([]);
+  const { allMetrics, multipleMeasurements, liveData } = useSelector(getMetrics);
+
+  const [resultgetMetrics] = useQuery({
+    query,
+  });
+
+  const [resultMultipleMeasurements] = useQuery({
+    query: queryMultipleMeasurements,
+    variables: {
+      // We could also just fetch the metrics the user needs combining the selectedChartOptions hooks
+      input: allMetrics.map(metricName => ({
+        metricName,
+        after: currentTime - passTime,
+        before: currentTime,
+      })),
+    },
+  });
   const [resultsLiveMetrics] = useSubscription({
     query: queryMetricSubscription,
   });
-  let [resultMultipleMeasurements] = useQuery({
-    query: queryMultipleMeasurements,
-  });
-
-  const loadDropDown = (): Array<Object> => {
-    const tempOptions: any = [];
-    Object.entries(multipleMeasurements).forEach((m: any) => {
-      tempOptions.push({ value: m[1].metric, label: m[1].metric.replace(/([A-Z])/g, ' $1') });
-    });
-    return tempOptions;
-  };
 
   const handleChange = (selectedOption: any) => {
-    setSelectedChartsOptions(selectedOption);
+    setSelectedChartsOptions(selectedOption === null ? [] : selectedOption);
   };
+
+  useEffect(() => {
+    const tempOptions: any = [];
+    allMetrics.forEach((m: any) => {
+      tempOptions.push({ value: m, label: m.replace(/([A-Z])/g, ' $1') });
+    });
+    setDropDownOptions(tempOptions);
+  }, [allMetrics]);
+
+  // Get All Avaliable Metrics
+  useEffect(() => {
+    const { data, error } = resultgetMetrics;
+    if (error) {
+      dispatch(actions.metricsApiErrorReceived({ error: error?.message }));
+      return;
+    }
+    if (!data) return;
+
+    dispatch(actions.allMetricsDataRecevied(data));
+  }, [dispatch, resultgetMetrics]);
 
   // Effect for Multiple and Pass Metrics
   useEffect(() => {
@@ -106,7 +130,7 @@ const Metrics = () => {
   useEffect(() => {
     const { data, error } = resultsLiveMetrics;
     if (error) {
-      dispatch(actions.metricsLiveErrorReceived({ error: error?.message }));
+      dispatch(actions.metricsApiErrorReceived({ error: error?.message }));
       return;
     }
     if (!data) return;
@@ -123,7 +147,7 @@ const Metrics = () => {
             closeMenuOnSelect
             components={animatedComponents}
             isMulti
-            options={loadDropDown()}
+            options={dropDownOptions}
           />
         </Grid>
       </Container>
