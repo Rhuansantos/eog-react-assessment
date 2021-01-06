@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.js": "/eog-react-assessment/static/js/main.0399ff04.chunk.js",
+    "main.js.map": "/eog-react-assessment/static/js/main.0399ff04.chunk.js.map",
+    "runtime-main.js": "/eog-react-assessment/static/js/runtime-main.54a6e731.js",
+    "runtime-main.js.map": "/eog-react-assessment/static/js/runtime-main.54a6e731.js.map",
+    "static/css/2.f42e59c9.chunk.css": "/eog-react-assessment/static/css/2.f42e59c9.chunk.css",
+    "static/js/2.4acdc288.chunk.js": "/eog-react-assessment/static/js/2.4acdc288.chunk.js",
+    "static/js/2.4acdc288.chunk.js.map": "/eog-react-assessment/static/js/2.4acdc288.chunk.js.map",
+    "index.html": "/eog-react-assessment/index.html",
+    "precache-manifest.1fec6a82f982774812774ff0656714ae.js": "/eog-react-assessment/precache-manifest.1fec6a82f982774812774ff0656714ae.js",
+    "service-worker.js": "/eog-react-assessment/service-worker.js",
+    "static/css/2.f42e59c9.chunk.css.map": "/eog-react-assessment/static/css/2.f42e59c9.chunk.css.map",
+    "static/js/2.4acdc288.chunk.js.LICENSE.txt": "/eog-react-assessment/static/js/2.4acdc288.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.54a6e731.js",
+    "static/css/2.f42e59c9.chunk.css",
+    "static/js/2.4acdc288.chunk.js",
+    "static/js/main.0399ff04.chunk.js"
+  ]
+}
